@@ -1,6 +1,6 @@
-# wiz README
+# Wiz Language
 
-This is the README for your extension "wiz". After writing up a brief description, we recommend including the following sections.
+Syntax support for the Wiz programming language. This extension adds basic features to help make writing Wiz much more pleasant in Visual Studio Code
 
 ## Features
 
