@@ -35,5 +35,11 @@
       "scopeName": "source.wiz",
       "path": "./syntaxes/wiz.tmLanguage.json"
     }]
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.16.0"
   }
 }
