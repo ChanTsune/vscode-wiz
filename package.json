@@ -10,11 +10,16 @@
   "categories": [
     "Programming Languages"
   ],
+  "icon": "icon.png",
   "contributes": {
     "languages": [{
       "id": "wiz",
       "aliases": ["wiz", "wiz"],
       "extensions": [".wiz"],
+      "icon": {
+        "dark": "icon.svg",
+        "light": "icno.svg"
+      },
       "configuration": "./language-configuration.json"
     }],
     "grammars": [{
