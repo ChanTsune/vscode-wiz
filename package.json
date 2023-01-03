@@ -22,7 +22,7 @@
   "contributes": {
     "languages": [{
       "id": "wiz",
-      "aliases": ["wiz", "wiz"],
+      "aliases": ["Wiz", "wiz"],
       "extensions": [".wiz"],
       "icon": {
         "dark": "icon.svg",
@@ -30,11 +30,23 @@
       },
       "configuration": "./language-configuration.json"
     }],
-    "grammars": [{
-      "language": "wiz",
-      "scopeName": "source.wiz",
-      "path": "./syntaxes/wiz.tmLanguage.json"
-    }]
+    "grammars": [
+      {
+        "language": "wiz",
+        "scopeName": "source.wiz",
+        "path": "./syntaxes/wiz.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.wiz.codeblock",
+        "path": "./syntaxes/wiz.codeblock.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.wiz": "wiz"
+        }
+      }
+    ]
   },
   "scripts": {
     "package": "vsce package"

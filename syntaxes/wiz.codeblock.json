@@ -1,0 +1,22 @@
+{
+  "fileTypes": [],
+  "injectionSelector": "L:markup.fenced_code.block.markdown",
+  "patterns": [
+    {
+      "include": "#wiz-code-block"
+    }
+  ],
+  "repository": {
+    "wiz-code-block": {
+      "begin": "wiz",
+      "end": "(^|\\G)(?=\\s*[`~]{3,}\\s*$)",
+      "contentName": "meta.embedded.block.wiz",
+      "patterns": [
+        {
+          "include": "source.wiz"
+        }
+      ]
+    }
+  },
+  "scopeName": "markdown.wiz.codeblock"
+}
