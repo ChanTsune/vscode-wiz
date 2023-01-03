@@ -3,19 +3,56 @@
   "name": "wiz",
   "patterns": [
     {
-      "include": "#keywords"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#numeric"
-    },
-    {
-      "include": "#comments"
+      "include": "#code"
     }
   ],
   "repository": {
+    "code": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#annotations"
+        },
+        {
+          "include": "#keywords"
+        },
+        {
+          "include": "#literal-string"
+        },
+        {
+          "include": "#keyword-constant"
+        },
+        {
+          "include": "#keyword-literal"
+        },
+        {
+          "include": "#keyword-operator"
+        },
+        {
+          "include": "#keyword-punctuation"
+        },
+        {
+          "include": "#literal-functions"
+        },
+        {
+          "include": "#class-literal"
+        },
+        {
+          "include": "#parens"
+        },
+        {
+          "include": "#braces"
+        },
+        {
+          "include": "#brackets"
+        },
+        {
+          "include": "#types"
+        }
+      ]
+    },
     "comments": {
       "patterns": [
         {
@@ -23,25 +60,369 @@
           "match": "//.+"
         },
         {
-          "name":"comment.block.wiz",
+          "name": "comment.block.wiz",
           "begin": "/\\*",
           "end": "\\*/"
+        }
+      ]
+    },
+    "annotations": {
+      "name": "meta.declaration.annotation.wiz",
+      "begin": "(\\#\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type.annotation.wiz"
+        }
+      },
+      "end": "(\\])",
+      "endCaptures": {
+        "1": {
+          "name": "storage.type.annotation.wiz"
+        }
+      },
+      "patterns": [
+        {
+          "match": "(\\w*)(\\s*,\\s*)*",
+          "captures": {
+            "1": {
+              "name": "storage.type.annotation.wiz"
+            }
+          }
+        },
+        {
+          "name": "punctuation.seperator.property.wiz",
+          "match": ","
+        }
+      ]
+    },
+    "keyword-constant": {
+      "patterns": [
+        {
+          "name": "constant.language.wiz",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "variable.language.wiz",
+          "match": "\\b(self)\\b"
+        },
+        {
+          "include": "#numeric"
+        }
+      ]
+    },
+    "keyword-literal": {
+      "patterns": [
+        {
+          "name": "keyword.control.wiz",
+          "match": "\\b(as)\\b"
+        },
+        {
+          "name": "storage.type.wiz",
+          "match": "\\b(var|val)\\b"
+        },
+        {
+          "name": "keyword.control.conditional.wiz",
+          "match": "\\b(if|else|when)\\b"
+        },
+        {
+          "name": "keyword.control",
+          "match": "\\b(while|for|return)\\b"
+        }
+      ]
+    },
+    "keyword-operator": {
+      "patterns": []
+    },
+    "keyword-punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.accessor.reference.wiz",
+          "match": "(::)"
+        },
+        {
+          "name": "punctuation.accessor.dot.safe.wiz",
+          "match": "(\\?\\.)"
+        },
+        {
+          "name": "punctuation.accessor.dot.wiz",
+          "match": "(\\.)"
+        },
+        {
+          "name": "punctuation.seperator.wiz",
+          "match": "(\\,)"
+        },
+        {
+          "name": "punctuation.terminator.wiz",
+          "match": "(\\;)"
         }
       ]
     },
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.control.wiz",
-          "match": "\\b(if|else|while|for|return|as)\\b"
-        },
-        {
           "name": "keyword.other.wiz",
-          "match": "\\b(var|val|struct|extension|protocol|fun|namespace|use)\\b"
+          "match": "\\b(namespace|use)\\b"
         }
       ]
     },
-    "strings": {
+    "braces": {
+      "patterns": [
+        {
+          "name": "meta.block.wiz",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.wiz"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.wiz"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "brackets": {
+      "patterns": [
+        {
+          "name": "meta.brackets.wiz",
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.brackets.begin.wiz"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.brackets.end.wiz"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "class-literal": {
+      "name": "meta.class.wiz",
+      "begin": "(?=\\b(?:struct|protocol|extension)\\s+\\w+)\\b",
+      "end": "(?=\\}|$)",
+      "patterns": [
+        {
+          "include": "#keyword-literal"
+        },
+        {
+          "begin": "\\b(struct|protocol|extension)\\b\\s+(\\w+)",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.modifier.wiz"
+            },
+            "2": {
+              "name": "entity.name.class.wiz"
+            }
+          },
+          "end": "(?=\\{|\\(|:|$)",
+          "patterns": [
+            {
+              "include": "#keyword-literal"
+            },
+            {
+              "include": "#annotations"
+            },
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "begin": "(:)\\s*(\\w+)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.declaration.wiz"
+            },
+            "2": {
+              "name": "entity.other.inherited-class.wiz"
+            }
+          },
+          "end": "(?={|=|$)",
+          "patterns": [
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "include": "#braces"
+        },
+        {
+          "include": "#parens"
+        }
+      ]
+    },
+    "literal-functions": {
+      "begin": "(?=\\b(?:fun)\\b)",
+      "end": "(?=$|=|\\})",
+      "patterns": [
+        {
+          "begin": "\\b(fun)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.wiz"
+            }
+          },
+          "end": "(?=\\()",
+          "patterns": [
+            {
+              "match": "([\\.<\\?>\\w]+\\.)?(\\w+|(`[^`]*`))",
+              "captures": {
+                "2": {
+                  "name": "entity.name.function.wiz"
+                }
+              }
+            },
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.declaration.wiz"
+            }
+          },
+          "end": "(?={|=|$)",
+          "patterns": [
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "include": "#parens"
+        },
+        {
+          "include": "#braces"
+        }
+      ]
+    },
+    "parameters": {
+      "patterns": [
+        {
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.declaration.wiz"
+            }
+          },
+          "end": "(?=,|=|\\))",
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "name": "variable.parameter.function.wiz",
+          "match": "\\w+(?=:)"
+        },
+        {
+          "include": "#keyword-literal"
+        }
+      ]
+    },
+    "parens": {
+      "patterns": [
+        {
+          "name": "meta.group.wiz",
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.wiz"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.wiz"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#keyword-punctuation"
+            },
+            {
+              "include": "#parameters"
+            },
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "entity.name.type.class.wiz",
+          "match": "((?:[a-zA-Z]\\w*\\.)*[A-Z]+\\w*[a-z]+\\w*)(\\?)",
+          "patterns": [
+            {
+              "include": "#keyword-punctuation"
+            },
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "name": "entity.name.type.class.wiz",
+          "match": "\\b(?:[a-z]\\w*(\\.))*[A-Z]+\\w*\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.dereference.wiz"
+            }
+          }
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.wiz"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.wiz"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#types"
+            }
+          ]
+        },
+        {
+          "include": "#keyword-punctuation"
+        },
+        {
+          "include": "#keyword-operator"
+        }
+      ]
+    },
+    "literal-string": {
       "name": "string.quoted.double.wiz",
       "begin": "\"",
       "end": "\"",
