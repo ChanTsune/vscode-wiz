@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  builder:
+    image: "node:lts-alpine"
+    volumes:
+      - "./:/vscode-wiz"
+    working_dir:
+      "/vscode-wiz/"
+    command: sh -c "npm i && npm run package"
